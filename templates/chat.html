@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Customer Support – The Mobile Techs</title>
+  <style>
+    body {
+      font-family: Arial;
+      max-width: 700px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .bubble {
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      max-width: 90%;
+    }
+
+    .user {
+      background: #e1f5fe;
+      align-self: flex-start;
+    }
+
+    .ai {
+      background: #f1f8e9;
+      align-self: flex-end;
+    }
+
+    .chatbox {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .avatar {
+      font-size: 20px;
+      margin-right: 8px;
+    }
+
+    .timestamp {
+      font-size: 0.75em;
+      color: gray;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>📱 The Mobile Techs Live Support</h2>
+  <form method="post" action="/chat">
+    <input type="hidden" name="session_id" value="{{ session_id }}">
+    <textarea name="user_message" rows="4" placeholder="Type your message..." style="width: 100%;"></textarea><br>
+    <button type="submit">Send</button>
+  </form>
+  <hr>
+
+  <div class="chatbox">
+    {% for msg in history %}
+    <div class="bubble {{ 'user' if msg['type'] == 'human' else 'ai' }}">
+      <span class="avatar">{{ '🧑' if msg['type'] == 'human' else '🤖' }}</span>
+      <strong>{{ 'You:' if msg['type'] == 'human' else 'Mobile Techs Agent:' }}</strong><br>
+      {{ msg['message'] }}<br>
+      <div class="timestamp">{{ msg['timestamp'] }}</div>
+    </div>
+    {% endfor %}
+  </div>
+</body>
+
+</html>
