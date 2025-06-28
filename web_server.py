@@ -126,3 +126,11 @@ async def view_chats(request: Request):
         cursor = await db.execute("SELECT session_id, user_message, ai_reply, timestamp FROM chats ORDER BY timestamp DESC")
         rows = await cursor.fetchall()
     return templates.TemplateResponse("admin.html", {"request": request, "chats": rows})
+
+# Admin route to clear chat history Sonjoy code base
+@app.get("/admin/clear", response_class=HTMLResponse)
+async def clear_chats(request: Request):
+    async with aiosqlite.connect("chat_history.db") as db:
+        await db.execute("DELETE FROM chats")
+        await db.commit()
+    return RedirectResponse("/admin", status_code=303)
